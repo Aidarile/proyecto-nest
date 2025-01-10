@@ -1,6 +1,7 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { GatosService } from './gatos.service';
 import { Gato } from './interface/gato.interface';
+import { crearGatoDto } from './dtos/crearGato.dto';
 
 @Controller('gatos')
 export class GatosController {
@@ -20,5 +21,12 @@ export class GatosController {
     @Delete("/:id")
     EliminarListadoGatos( @Param("id") id:any): string {
         return "Eliminar el gato..." + id;
+    }
+
+    @Post()
+    InsertarUnNuevoGato( @Body() nuevoGato: crearGatoDto): string {
+
+        this.servicioDeGatos.create(nuevoGato);
+        return "gato insertado correctamente";
     }
 }
