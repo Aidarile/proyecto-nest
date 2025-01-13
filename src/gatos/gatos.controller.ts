@@ -9,24 +9,23 @@ export class GatosController {
     constructor(private servicioDeGatos: GatosService) {}
 
     @Get()
-    ListarTodosLosGatos(): Gato[] {
+    async ListarTodosLosGatos():Promise <Gato[]> {
         return this.servicioDeGatos.findAll();
     }
 
     @Get("/:nombre")
-    BurcarUnGato( @Param("nombre") nombreDelGato: any ): Gato {
+    BurcarUnGato( @Param("nombre") nombreDelGato: any ):Promise<Gato> {
         return this.servicioDeGatos.findByName(nombreDelGato);
     }
 
     @Delete("/:id")
-    EliminarListadoGatos( @Param("id") id:any): string {
-        return "Eliminar el gato..." + id;
+    EliminarGato( @Param("id") id:any):Promise<string> {
+        return this.servicioDeGatos.eliminarGatoPorId(id);
+        
     }
 
     @Post()
-    InsertarUnNuevoGato( @Body() nuevoGato: crearGatoDto): string {
-
-        this.servicioDeGatos.create(nuevoGato);
-        return "gato insertado correctamente";
+    InsertarUnNuevoGato( @Body() nuevoGato: crearGatoDto):Promise<Gato> {
+        return this.servicioDeGatos.create(nuevoGato);
     }
 }
