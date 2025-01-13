@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PerrosService } from './perros.service';
-import { CreatePerroDto } from './dto/create-perro.dto';
 import { UpdatePerroDto } from './dto/update-perro.dto';
+import { CreatePerroDto } from './dto/create-perro.dto';
 
 @Controller('perros')
 export class PerrosController {
@@ -19,16 +19,16 @@ export class PerrosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.perrosService.findOne(+id);
+    return this.perrosService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePerroDto: UpdatePerroDto) {
-    return this.perrosService.update(+id, updatePerroDto);
+    return this.perrosService.update(id, updatePerroDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.perrosService.remove(+id);
+    return this.perrosService.remove(id);
   }
 }

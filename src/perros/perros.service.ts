@@ -1,26 +1,33 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreatePerroDto } from './dto/create-perro.dto';
 import { UpdatePerroDto } from './dto/update-perro.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Perro } from './schemas/perro.schemas';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PerrosService {
-  create(createPerroDto: CreatePerroDto) {
-    return 'This action adds a new perro';
+  constructor( @InjectModel(Perro.name) private perroModel: Model<Perro>) {}
+  
+  async create(createPerroDto: Perro):Promise<Perro> {
+    const nuevoPerro = new this.perroModel(createPerroDto);
+    return nuevoPerro.save();
   }
 
-  findAll() {
-    return `This action returns all perros`;
+  async findAll():Promise<Perro[]> {
+    return this.perroModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} perro`;
+  async findOne(id: string):Promise<Perro> {
+    return this.perroModel.findById(id);
   }
 
-  update(id: number, updatePerroDto: UpdatePerroDto) {
-    return `This action updates a #${id} perro`;
+  async update(id: string, updatePerroDto: UpdatePerroDto):Promise<Perro> {
+    return this.perroModel.findByIdAndDelete(id, updatePerroDto).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} perro`;
+  async remove(id: string) {
+    return this.perroModel.findByIdAndDelete(id).exec();
   }
 }
